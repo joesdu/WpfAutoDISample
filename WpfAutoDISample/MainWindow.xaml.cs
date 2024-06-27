@@ -23,7 +23,7 @@ public partial class MainWindow
 
     private async void OnBtnClick(object sender, RoutedEventArgs e)
     {
-        _model.Message = "Clicked";
+        _model.Message = "Clicked Button";
         await Task.CompletedTask;
     }
 }

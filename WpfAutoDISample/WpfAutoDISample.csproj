@@ -7,6 +7,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
 		<LangVersion>preview</LangVersion>
+		<NoWarn>NU1701;CS9057;</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,7 +19,8 @@
 		<PackageReference Include="CommunityToolkit.Common" Version="8.2.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="EasilyNET.AutoDependencyInjection" Version="3.24.627.145" />
-		<PackageReference Include="MicaWPF" Version="6.2.8" />
+		<PackageReference Include="iNKORE.UI.WPF" Version="1.2.6" />
+		<PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.9.29" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-preview.5.24306.7" />
 	</ItemGroup>
 
