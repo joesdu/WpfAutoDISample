@@ -18,7 +18,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Common" Version="8.2.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="EasilyNET.AutoDependencyInjection" Version="3.24.627.145" />
+		<PackageReference Include="EasilyNET.AutoDependencyInjection" Version="3.24.628.114" />
 		<PackageReference Include="iNKORE.UI.WPF" Version="1.2.6" />
 		<PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.9.29" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-preview.5.24306.7" />
