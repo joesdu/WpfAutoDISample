@@ -1,6 +1,6 @@
-﻿using EasilyNET.AutoDependencyInjection.Core.Attributes;
+﻿using System.Windows;
+using EasilyNET.AutoDependencyInjection.Core.Attributes;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
 using WpfAutoDISample.ViewModels;
 
 namespace WpfAutoDISample;
@@ -11,19 +11,17 @@ namespace WpfAutoDISample;
 [DependencyInjection(ServiceLifetime.Singleton, AddSelf = true)]
 public partial class MainWindow
 {
-    private readonly MainWindowModel _model;
-
     /// <inheritdoc />
     public MainWindow(MainWindowModel mwm)
     {
         InitializeComponent();
-        _model = mwm;
         DataContext = mwm;
     }
 
     private async void OnBtnClick(object sender, RoutedEventArgs e)
     {
-        _model.Message = "Clicked";
+        if (DataContext is not MainWindowModel vm) return;
+        vm.Message = "Clicked";
         await Task.CompletedTask;
     }
 }

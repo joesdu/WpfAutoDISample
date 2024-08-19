@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +11,18 @@ namespace WpfAutoDISample;
 /// </summary>
 public partial class App
 {
+    private IHost AppHost { get; set; }
+
+    /// <summary>
+    /// Services
+    /// </summary>
+    public static IServiceProvider Services => CurrentAppHost.Services;
+
+    /// <summary>
+    /// 获取当前AppHost
+    /// </summary>
+    private static IHost CurrentAppHost => (Current as App)?.AppHost ?? throw new InvalidOperationException("无法获取AppHost，当前Application实例不是App类型。");
+
     /// <summary>
     /// Main入口函数
     /// </summary>
@@ -23,24 +34,21 @@ public partial class App
         // 创建一个通用主机
         using var host = CreateHostBuilder(args).Build();
         host.InitializeApplication();
-        host.StartAsync().ConfigureAwait(true).GetAwaiter().GetResult();
-
         // 配置主窗口
         var app = new App();
         app.InitializeComponent();
-        app.MainWindow = host.Services.GetRequiredService<MainWindow>();
+        app.AppHost = host;
+        app.MainWindow = CurrentAppHost.Services.GetRequiredService<MainWindow>();
         app.MainWindow.Visibility = Visibility.Visible;
         app.Run();
-        host.StopAsync().ConfigureAwait(true).GetAwaiter().GetResult();
     }
 
     private static IHostBuilder CreateHostBuilder(params string[] args) =>
         Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration(c =>
             {
-                var basePath =
-                    Path.GetDirectoryName(AppContext.BaseDirectory) ?? throw new DirectoryNotFoundException("Unable to find the base directory of the application.");
-                _ = c.SetBasePath(basePath);
+                c.SetBasePath(AppContext.BaseDirectory);
+                c.AddJsonFile("appsettings.json", false, false);
             })
             .ConfigureServices(sc =>
             {
@@ -49,4 +57,18 @@ public partial class App
                 sc.AddSingleton<IMessenger, WeakReferenceMessenger>(provider => provider.GetRequiredService<WeakReferenceMessenger>());
                 sc.AddSingleton(_ => Current.Dispatcher);
             });
+
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        await AppHost.StopAsync().ConfigureAwait(false);
+        AppHost.Dispose();
+        Shutdown();
+        base.OnExit(e);
+    }
+
+    protected override async void OnStartup(StartupEventArgs e)
+    {
+        await AppHost.StartAsync().ConfigureAwait(false);
+        base.OnStartup(e);
+    }
 }
