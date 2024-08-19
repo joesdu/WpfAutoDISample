@@ -1,10 +1,9 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using EasilyNET.Core.Misc;
+﻿using System.IO;
+using System.Windows;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.IO;
-using System.Windows;
 
 namespace WpfAutoDISample;
 
@@ -21,8 +20,6 @@ public partial class App
     [STAThread]
     public static void Main(string[] args)
     {
-        // 不包含的程序集
-        AssemblyHelper.AddExcludeLibs(nameof(MicaWPF));
         // 创建一个通用主机
         using var host = CreateHostBuilder(args).Build();
         host.InitializeApplication();

@@ -10,4 +10,4 @@ namespace WpfAutoDISample;
  * 该处模块注入顺序为从上至下,本类AppWebModule最先注册.所以本类中中间件注册函数ApplicationInitialization最先执行.
  */
 [DependsOn(typeof(DependencyAppModule))]
-internal sealed class AppServiceModules : AppModule { }
+internal sealed class AppServiceModules : AppModule;
