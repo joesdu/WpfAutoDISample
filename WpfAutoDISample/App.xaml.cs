@@ -1,8 +1,10 @@
 ﻿using System.Windows;
-using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.Extensions.Configuration;
+using System.Windows.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using WpfAutoDISample.Common;
+using WpfAutoDISample.Views;
 
 namespace WpfAutoDISample;
 
@@ -11,64 +13,73 @@ namespace WpfAutoDISample;
 /// </summary>
 public partial class App
 {
-    private IHost AppHost { get; set; }
+    private readonly ILogger<App> _logger;
+
+    public App(ref IHost host)
+    {
+        InitializeComponent();
+        _host = host;
+        _logger = Services.GetRequiredService<ILogger<App>>();
+        MainWindow = Services.GetRequiredService<MainWindow>();
+        MainWindow.Visibility = Visibility.Visible;
+    }
+
+    private IHost _host { get; }
 
     /// <summary>
     /// Services
     /// </summary>
+    // ReSharper disable once MemberCanBePrivate.Global
     public static IServiceProvider Services => CurrentAppHost.Services;
 
     /// <summary>
     /// 获取当前AppHost
     /// </summary>
-    private static IHost CurrentAppHost => (Current as App)?.AppHost ?? throw new InvalidOperationException("无法获取AppHost，当前Application实例不是App类型。");
-
-    /// <summary>
-    /// Main入口函数
-    /// </summary>
-    /// <param name="args"></param>
-    /// <returns></returns>
-    [STAThread]
-    public static void Main(string[] args)
-    {
-        // 创建一个通用主机
-        using var host = CreateHostBuilder(args).Build();
-        host.InitializeApplication();
-        // 配置主窗口
-        var app = new App();
-        app.InitializeComponent();
-        app.AppHost = host;
-        app.MainWindow = CurrentAppHost.Services.GetRequiredService<MainWindow>();
-        app.MainWindow.Visibility = Visibility.Visible;
-        app.Run();
-    }
-
-    private static IHostBuilder CreateHostBuilder(params string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration(c =>
-            {
-                c.SetBasePath(AppContext.BaseDirectory);
-                c.AddJsonFile("appsettings.json", false, false);
-            })
-            .ConfigureServices(sc =>
-            {
-                sc.AddApplicationModules<AppServiceModules>();
-                sc.AddSingleton<WeakReferenceMessenger>();
-                sc.AddSingleton<IMessenger, WeakReferenceMessenger>(provider => provider.GetRequiredService<WeakReferenceMessenger>());
-                sc.AddSingleton(_ => Current.Dispatcher);
-            });
+    private static IHost CurrentAppHost => (Current as App)?._host ?? throw new InvalidOperationException("无法获取AppHost，当前Application实例不是App类型。");
 
     protected override async void OnExit(ExitEventArgs e)
     {
-        await AppHost.StopAsync().ConfigureAwait(false);
-        AppHost.Dispose();
+        AppDomain.CurrentDomain.UnhandledException -= CurrentDomainUnhandledException;
+        DispatcherUnhandledException -= AppDispatcherUnhandledException;
+        TaskScheduler.UnobservedTaskException -= TaskSchedulerOnUnobservedTaskException;
+        await _host.StopAsync().ConfigureAwait(false);
+        _host.Dispose();
+        // 这里不要忘记释放
+        WinApis._mutex.ReleaseMutex();
         Shutdown();
         base.OnExit(e);
     }
 
     protected override async void OnStartup(StartupEventArgs e)
     {
-        await AppHost.StartAsync().ConfigureAwait(false);
+        AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
+        DispatcherUnhandledException += AppDispatcherUnhandledException;
+        TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
+        await _host.StartAsync().ConfigureAwait(false);
         base.OnStartup(e);
+    }
+
+    private void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+        HandleException(e.ExceptionObject as Exception);
+    }
+
+    private void TaskSchedulerOnUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+    {
+        HandleException(e.Exception);
+        e.SetObserved();
+    }
+
+    private void AppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
+        HandleException(e.Exception);
+        e.Handled = true;
+    }
+
+    private void HandleException(Exception? exception)
+    {
+        if (exception is null) return;
+        _logger.LogError(exception, "Unhandled exception occurred.");
+        //MessageBox.Show("发生未处理的异常，程序将继续运行。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
     }
 }
