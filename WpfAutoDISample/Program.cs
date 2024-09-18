@@ -127,7 +127,7 @@ public static class Program
             {
                 sc.AddApplicationModules<AppServiceModules>();
                 sc.AddSingleton<WeakReferenceMessenger>();
-                sc.AddSingleton<IMessenger, WeakReferenceMessenger>(provider => provider.GetRequiredService<WeakReferenceMessenger>());
+                sc.AddSingleton<IMessenger, WeakReferenceMessenger>(sp => sp.GetRequiredService<WeakReferenceMessenger>());
                 sc.AddSingleton(_ => Application.Current.Dispatcher);
             });
 }

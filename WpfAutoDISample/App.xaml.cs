@@ -18,13 +18,13 @@ public partial class App
     public App(ref IHost host)
     {
         InitializeComponent();
-        _host = host;
+        Host = host;
         _logger = Services.GetRequiredService<ILogger<App>>();
         MainWindow = Services.GetRequiredService<MainWindow>();
         MainWindow.Visibility = Visibility.Visible;
     }
 
-    private IHost _host { get; }
+    private IHost Host { get; }
 
     /// <summary>
     /// Services
@@ -35,15 +35,15 @@ public partial class App
     /// <summary>
     /// 获取当前AppHost
     /// </summary>
-    private static IHost CurrentAppHost => (Current as App)?._host ?? throw new InvalidOperationException("无法获取AppHost，当前Application实例不是App类型。");
+    private static IHost CurrentAppHost => (Current as App)?.Host ?? throw new InvalidOperationException("无法获取AppHost，当前Application实例不是App类型。");
 
     protected override async void OnExit(ExitEventArgs e)
     {
         AppDomain.CurrentDomain.UnhandledException -= CurrentDomainUnhandledException;
         DispatcherUnhandledException -= AppDispatcherUnhandledException;
         TaskScheduler.UnobservedTaskException -= TaskSchedulerOnUnobservedTaskException;
-        await _host.StopAsync().ConfigureAwait(false);
-        _host.Dispose();
+        await Host.StopAsync().ConfigureAwait(false);
+        Host.Dispose();
         // 这里不要忘记释放
         WinApis._mutex.ReleaseMutex();
         Shutdown();
@@ -55,7 +55,7 @@ public partial class App
         AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
         DispatcherUnhandledException += AppDispatcherUnhandledException;
         TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
-        await _host.StartAsync().ConfigureAwait(false);
+        await Host.StartAsync().ConfigureAwait(false);
         base.OnStartup(e);
     }
 
