@@ -1,12 +1,14 @@
-﻿using System.Windows;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using LiteDB;
+using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using CommunityToolkit.Mvvm.Messaging;
-using LiteDB;
-using Microsoft.Extensions.DependencyInjection;
 using WpfAutoDISample.Common;
+using WpfAutoDISample.Enums;
 using WpfAutoDISample.Events;
+using WpfAutoDISample.Models;
 
 namespace WpfAutoDISample.Controls;
 
@@ -97,17 +99,17 @@ public sealed class StatefulGridSplitter : GridSplitter, IDisposable
         switch (orientation)
         {
             case GridSplitterOrientation.Vertical:
-                {
-                    var gridColumnIndex = Grid.GetColumn(this);
-                    realValue = parentGrid.ColumnDefinitions[gridColumnIndex - 1].Width.Value;
-                    break;
-                }
+            {
+                var gridColumnIndex = Grid.GetColumn(this);
+                realValue = parentGrid.ColumnDefinitions[gridColumnIndex - 1].Width.Value;
+                break;
+            }
             case GridSplitterOrientation.Horizontal:
-                {
-                    var gridRowIndex = Grid.GetRow(this);
-                    realValue = parentGrid.RowDefinitions[gridRowIndex - 1].Height.Value;
-                    break;
-                }
+            {
+                var gridRowIndex = Grid.GetRow(this);
+                realValue = parentGrid.RowDefinitions[gridRowIndex - 1].Height.Value;
+                break;
+            }
             case GridSplitterOrientation.Unknown:
                 realValue = parentGrid.ActualWidth * MinRatio;
                 break;

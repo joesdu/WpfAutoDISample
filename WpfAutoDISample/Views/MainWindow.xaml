@@ -8,6 +8,7 @@
                  d:DataContext="{d:DesignInstance viewModels:MainWindowModel}"
                  mc:Ignorable="d"
                  Title="MainWindow" Height="600" Width="800"
+                 Uid="66976bc7527624f51dbd3088"
                  WindowStartupLocation="CenterScreen">
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
@@ -48,12 +49,12 @@
                     </Grid.RowDefinitions>
                     <!-- 上侧的Panel -->
                     <Border Grid.Row="0" Background="Beige">
-                        <TextBlock>上侧的Panel</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Message}" />
                     </Border>
                     <uc:StatefulGridSplitter Uid="66976c00527624f51dbd308a" MinRatio="0.15" Grid.Row="1" Height="3" />
                     <!-- 下侧的Panel -->
                     <Border Grid.Row="2" Background="Bisque">
-                        <TextBlock>下侧的Panel</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">下侧的Panel</TextBlock>
                     </Border>
                 </Grid>
             </Border>

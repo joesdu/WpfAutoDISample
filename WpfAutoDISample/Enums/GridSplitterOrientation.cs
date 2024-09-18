@@ -1,4 +1,4 @@
-﻿namespace WpfAutoDISample.Controls;
+﻿namespace WpfAutoDISample.Enums;
 
 internal enum GridSplitterOrientation
 {

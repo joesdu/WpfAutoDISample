@@ -1,6 +1,6 @@
 ﻿using LiteDB;
 
-namespace WpfAutoDISample.Controls;
+namespace WpfAutoDISample.Models;
 
 internal sealed class GridSplitterState
 {
