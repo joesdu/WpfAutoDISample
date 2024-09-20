@@ -1,10 +1,10 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using System.ComponentModel;
+using System.Windows;
+using CommunityToolkit.Mvvm.Messaging;
 using EasilyNET.AutoDependencyInjection.Core.Attributes;
 using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel;
-using System.Windows;
 using WpfAutoDISample.Common;
 using WpfAutoDISample.Events;
 using WpfAutoDISample.Models;
@@ -38,6 +38,17 @@ public partial class MainWindow
         SizeChanged += MainWindow_SizeChanged;
         SourceInitialized += OnSourceInitialized;
         Closing += MainWindow_Closing;
+        Loaded += MainWindow_Loaded;
+    }
+
+    private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        // 获取当前运行时的版本信息
+        var version = Environment.Version;
+        if (DataContext is MainWindowModel mv)
+        {
+            mv.Message = $"Hello WPF! 当前使用 .NET 版本: {version}";
+        }
     }
 
     public void Dispose()
