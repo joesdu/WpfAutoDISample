@@ -18,7 +18,7 @@
 		<TrimMode>link</TrimMode>
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 		<!--目前.NET9的SDK暂时无法开启这个配置,开启后会无法启动.这个应该是Bug-->
-		<!--<SelfContained>true</SelfContained>-->
+		<SelfContained>true</SelfContained>
 		<PublishReadyToRun>true</PublishReadyToRun>
 		<Copyright>© joesdu. All rights reserved.</Copyright>
 		<NeutralLanguage>zh-CN</NeutralLanguage>
@@ -45,7 +45,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-		<PackageReference Include="EasilyNET.AutoDependencyInjection" Version="3.24.1003.33" />
+		<PackageReference Include="EasilyNET.AutoDependencyInjection" Version="3.24.1007.185" />
 		<PackageReference Include="LiteDB" Version="5.0.21" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-rc.1.24431.7" />
 		<PackageReference Include="Serilog" Version="4.1.0-dev-02238" />
