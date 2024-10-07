@@ -17,7 +17,8 @@
 		<!-- 使用链接修剪模式 -->
 		<TrimMode>link</TrimMode>
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-		<SelfContained>true</SelfContained>
+		<!--目前.NET9的SDK暂时无法开启这个配置,开启后会无法启动.这个应该是Bug-->
+		<!--<SelfContained>true</SelfContained>-->
 		<PublishReadyToRun>true</PublishReadyToRun>
 		<Copyright>© joesdu. All rights reserved.</Copyright>
 		<NeutralLanguage>zh-CN</NeutralLanguage>

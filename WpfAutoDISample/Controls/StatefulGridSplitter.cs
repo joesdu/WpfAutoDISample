@@ -1,10 +1,10 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using LiteDB;
-using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using CommunityToolkit.Mvvm.Messaging;
+using LiteDB;
+using Microsoft.Extensions.DependencyInjection;
 using WpfAutoDISample.Common;
 using WpfAutoDISample.Enums;
 using WpfAutoDISample.Events;
