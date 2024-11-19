@@ -6,10 +6,7 @@
         mc:Ignorable="d" 
         WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" 
         Title="Loading" 
-        Height="500" Width="875">
-    <Window.Background>
-        <ImageBrush ImageSource="pack://application:,,,/Assets/Image/LoadingBackground.png" TileMode="FlipXY" Stretch="None" AlignmentX="Center" AlignmentY="Center" />
-    </Window.Background>
+        Height="500" Width="875" Background="Transparent">
     <Window.Resources>
         <Style x:Key="DotStyle" TargetType="Ellipse">
             <Setter Property="Width" Value="5" />
@@ -26,30 +23,42 @@
             <![CDATA[pack://application:,,,/WpfAutoDISample;component/Assets/Fonts/#华文行楷]]>
         </FontFamily>
     </Window.Resources>
-    <Grid Background="Transparent">
-        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0,0,20,10">
-            <TextBlock Text="正在启动,请稍后" 
-                       FontFamily="{StaticResource HuaWenXingKaiFont}" 
-                       Margin="0,0,20,0" 
-                       FontSize="20" Foreground="WhiteSmoke" FontWeight="DemiBold" VerticalAlignment="Center" />
-            <Canvas Width="50" Height="50">
-                <Canvas.RenderTransform>
-                    <RotateTransform CenterX="25" CenterY="25" />
-                </Canvas.RenderTransform>
-                <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="22.5" Canvas.Top="5" />
-                <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="35" Canvas.Top="10" />
-                <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="40" Canvas.Top="22.5" />
-                <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="35" Canvas.Top="35" />
-                <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="22.5" Canvas.Top="40" />
-                <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="10" Canvas.Top="35" />
-                <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="5" Canvas.Top="22.5" />
-                <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="10" Canvas.Top="10" />
-                <Canvas.Triggers>
-                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                        <BeginStoryboard Storyboard="{StaticResource LoadingAnimation}" />
-                    </EventTrigger>
-                </Canvas.Triggers>
-            </Canvas>
-        </StackPanel>
-    </Grid>
+    <Border CornerRadius="20" BorderThickness="0">
+        <Border.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Assets/Image/LoadingBackground.png"
+                    TileMode="FlipXY"
+                    Stretch="None" 
+                    AlignmentX="Center"
+                    AlignmentY="Center" />
+        </Border.Background>
+        <Border.Effect>
+            <DropShadowEffect Color="Black" Direction="320" ShadowDepth="0" BlurRadius="10" Opacity="0.5"/>
+        </Border.Effect>
+        <Grid Background="Transparent">
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0,0,20,10">
+                <TextBlock Text="正在启动,请稍后" 
+                   FontFamily="{StaticResource HuaWenXingKaiFont}" 
+                   Margin="0,0,20,0" 
+                   FontSize="20" Foreground="WhiteSmoke" FontWeight="DemiBold" VerticalAlignment="Center" />
+                <Canvas Width="50" Height="50">
+                    <Canvas.RenderTransform>
+                        <RotateTransform CenterX="25" CenterY="25" />
+                    </Canvas.RenderTransform>
+                    <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="22.5" Canvas.Top="5" />
+                    <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="35" Canvas.Top="10" />
+                    <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="40" Canvas.Top="22.5" />
+                    <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="35" Canvas.Top="35" />
+                    <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="22.5" Canvas.Top="40" />
+                    <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="10" Canvas.Top="35" />
+                    <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="5" Canvas.Top="22.5" />
+                    <Ellipse Style="{StaticResource DotStyle}" Canvas.Left="10" Canvas.Top="10" />
+                    <Canvas.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard Storyboard="{StaticResource LoadingAnimation}" />
+                        </EventTrigger>
+                    </Canvas.Triggers>
+                </Canvas>
+            </StackPanel>
+        </Grid>
+    </Border>    
 </Window>
