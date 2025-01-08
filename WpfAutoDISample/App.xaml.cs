@@ -49,7 +49,7 @@ public partial class App
         await Host.StopAsync().ConfigureAwait(false);
         Host.Dispose();
         // 这里不要忘记释放
-        WinApis._mutex.ReleaseMutex();
+        WinApis.Mutex?.ReleaseMutex();
         Shutdown();
         base.OnExit(e);
     }

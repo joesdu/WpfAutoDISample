@@ -8,25 +8,26 @@ using WpfAutoDISample.Common;
 
 namespace WpfAutoDISample.ServiceModules;
 
-internal sealed class LiteDBModule : AppModule
+internal sealed class LiteDbModule : AppModule
 {
-    public override void ConfigureServices(ConfigureServicesContext context)
+    public override async Task ConfigureServices(ConfigureServicesContext context)
     {
-        var cache_db = Path.Combine(Constant.GetUserDataPath(), "cache");
+        var cacheDb = Path.Combine(Constant.GetUserDataPath(), "cache");
         // 确保数据目录存在
-        if (!Directory.Exists(cache_db)) Directory.CreateDirectory(cache_db);
+        if (!Directory.Exists(cacheDb)) Directory.CreateDirectory(cacheDb);
         context.Services.AddKeyedSingleton<ILiteDatabase>(Constant.AppCacheServiceKey, (_, _) => new LiteDatabase(new LiteEngine(new EngineSettings
         {
             AutoRebuild = true,
-            Filename = Path.Combine(cache_db, Constant.AppCacheDB)
+            Filename = Path.Combine(cacheDb, Constant.AppCacheDb)
         })));
-        var ui_db = Path.Combine(Constant.GetUserDataPath(), "ui");
+        var uiDb = Path.Combine(Constant.GetUserDataPath(), "ui");
         // 确保数据目录存在
-        if (!Directory.Exists(ui_db)) Directory.CreateDirectory(ui_db);
+        if (!Directory.Exists(uiDb)) Directory.CreateDirectory(uiDb);
         context.Services.AddKeyedSingleton<ILiteDatabase>(Constant.UiConfigServiceKey, (_, _) => new LiteDatabase(new LiteEngine(new EngineSettings
         {
             AutoRebuild = true,
-            Filename = Path.Combine(ui_db, Constant.UiConfigDB)
+            Filename = Path.Combine(uiDb, Constant.UiConfigDb)
         })));
+        await Task.CompletedTask;
     }
 }

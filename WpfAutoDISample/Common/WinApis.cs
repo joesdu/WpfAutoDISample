@@ -7,11 +7,11 @@ namespace WpfAutoDISample.Common;
 
 internal static partial class WinApis
 {
-    private const int SW_RESTORE = 9;
+    private const int SwRestore = 9;
 
     //private const string GlobalMutexName = "DeepLogic.SourceDebug";
     internal static readonly string GlobalMutexName = Assembly.GetExecutingAssembly().GetName().Name ?? "WpfAutoDISample";
-    internal static Mutex _mutex = default!;
+    internal static Mutex? Mutex;
 
     /// <summary>
     /// 将指定窗口设置为前台窗口。
@@ -47,7 +47,7 @@ internal static partial class WinApis
     /// <returns></returns>
     internal static void EnsureSingleInstance(out bool createdNew)
     {
-        _mutex = new(true, GlobalMutexName, out createdNew);
+        Mutex = new(true, GlobalMutexName, out createdNew);
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ internal static partial class WinApis
             var hWnd = process.MainWindowHandle;
             if (IsIconic(hWnd))
             {
-                _ = ShowWindowAsync(hWnd, SW_RESTORE);
+                _ = ShowWindowAsync(hWnd, SwRestore);
             }
             _ = SetForegroundWindow(hWnd);
             break;

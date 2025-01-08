@@ -15,5 +15,5 @@ public partial class MainWindowModel : ObservableObject
     /// Message
     /// </summary>
     [ObservableProperty]
-    private string _message = "Hello WPF!";
+    public partial string Message { get; set; } = "Hello WPF!";
 }

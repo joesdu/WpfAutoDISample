@@ -17,12 +17,12 @@ internal static class Constant
     /// <summary>
     /// UI配置数据库
     /// </summary>
-    internal const string UiConfigDB = "uiconfig.db";
+    internal const string UiConfigDb = "uiconfig.db";
 
     /// <summary>
     /// AppCache数据库
     /// </summary>
-    internal const string AppCacheDB = "appcache.db";
+    internal const string AppCacheDb = "appcache.db";
 
     /// <summary>
     /// 获取用户数据目录

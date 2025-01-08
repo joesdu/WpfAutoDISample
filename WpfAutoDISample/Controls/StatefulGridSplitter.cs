@@ -20,7 +20,7 @@ public sealed class StatefulGridSplitter : GridSplitter, IDisposable
     private const string CollectionName = nameof(StatefulGridSplitter);
     private readonly ILiteCollection<GridSplitterState> _coll;
     private readonly IMessenger _messenger;
-    private readonly ILiteDatabase db;
+    private readonly ILiteDatabase _db;
     private bool _disposed;
 
     /// <inheritdoc />
@@ -28,8 +28,8 @@ public sealed class StatefulGridSplitter : GridSplitter, IDisposable
     {
         // 设置默认背景色
         Background = new SolidColorBrush(Color.FromRgb(99, 99, 99));
-        db = App.Services.GetRequiredKeyedService<ILiteDatabase>(Constant.UiConfigServiceKey);
-        _coll = db.GetCollection<GridSplitterState>(CollectionName);
+        _db = App.Services.GetRequiredKeyedService<ILiteDatabase>(Constant.UiConfigServiceKey);
+        _coll = _db.GetCollection<GridSplitterState>(CollectionName);
         Loaded += StatefulGridSplitter_Loaded;
         DragCompleted += StatefulGridSplitter_DragCompleted;
         _messenger = App.Services.GetRequiredService<IMessenger>();
@@ -80,7 +80,7 @@ public sealed class StatefulGridSplitter : GridSplitter, IDisposable
         {
             Loaded -= StatefulGridSplitter_Loaded;
             DragCompleted -= StatefulGridSplitter_DragCompleted;
-            db.Dispose();
+            _db.Dispose();
             _messenger.Unregister<MainWindowSizeChangeEventArgs>(this);
         }
 
@@ -160,7 +160,7 @@ public sealed class StatefulGridSplitter : GridSplitter, IDisposable
         catch (Exception)
         {
             // 当获取数据出现异常,表明数据结构可能发生了变化,删除原有的集合,当下次加载时会重新创建正确的数据结构
-            db.DropCollection(CollectionName);
+            _db.DropCollection(CollectionName);
         }
         if (orientation == GridSplitterOrientation.Vertical)
         {
