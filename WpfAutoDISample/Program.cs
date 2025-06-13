@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using WpfAutoDISample.Common;
-using WpfAutoDISample.Views;
 
 namespace WpfAutoDISample;
 
@@ -34,25 +33,17 @@ public static class Program
             // 退出当前实例
             return;
         }
-        ShowLoadingScreen(out var loading);
+        // 创建并显示启动画面
+        var splashScreen = new SplashScreen("Assets/Image/LoadingBackground.png");
+        splashScreen.Show(false);
         var dispatcher = Dispatcher.CurrentDispatcher;
         InitializeHostAsync(args).ContinueWith(async t =>
                 await dispatcher.InvokeAsync(async () =>
-                    await HandleHostInitializationAsync(t, loading).ConfigureAwait(false)),
+                    await HandleHostInitializationAsync(t, splashScreen).ConfigureAwait(false)),
             TaskScheduler.Default);
 
         // 启动WPF消息循环
         Dispatcher.Run();
-    }
-
-    /// <summary>
-    /// 显示加载屏幕
-    /// </summary>
-    /// <param name="loading"></param>
-    private static void ShowLoadingScreen(out Loading loading)
-    {
-        loading = new();
-        loading.Show();
     }
 
     /// <summary>
@@ -75,22 +66,22 @@ public static class Program
     /// 处理主机初始化的结果
     /// </summary>
     /// <param name="task"></param>
-    /// <param name="loading"></param>
+    /// <param name="splashScreen"></param>
     /// <returns></returns>
-    private static async Task HandleHostInitializationAsync(Task<IHost> task, Loading loading)
+    private static async Task HandleHostInitializationAsync(Task<IHost> task, SplashScreen splashScreen)
     {
         if (task.Exception is not null)
         {
             // 处理异常
             MessageBox.Show($"应用程序启动时发生错误: {task.Exception.InnerException?.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            loading.Close();
+            splashScreen.Close(TimeSpan.Zero);
             return;
         }
         var host = await task.ConfigureAwait(false);
         // 配置主窗口
         var app = new App(ref host);
-        // 关闭加载窗口
-        loading.Close();
+        // 关闭启动画面
+        splashScreen.Close(TimeSpan.FromMilliseconds(100));
         app.Run();
     }
 
